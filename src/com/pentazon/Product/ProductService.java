@@ -13,5 +13,19 @@ public interface ProductService {
      * @return product with specified Id
      */
 
+    /**
+     *
+     * @param productId
+     * @return
+     * @throws ProductExceptions
+     */
     public Product findProductById(String productId) throws ProductExceptions;
+
+    /**
+     *
+     * @param product
+     * @return
+     * @throws ProductExceptions
+     */
+    public boolean addProduct(Product product) throws ProductExceptions;
 }

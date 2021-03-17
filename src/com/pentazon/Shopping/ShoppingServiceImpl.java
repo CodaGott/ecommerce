@@ -6,6 +6,8 @@ import com.pentazon.customer.Buyer;
 import com.pentazon.customer.Customer;
 import com.pentazon.exceptions.CheckOutException;
 
+import java.time.LocalDate;
+
 public class ShoppingServiceImpl implements ShoppingService{
 
     private PaymentService paymentService;
@@ -15,9 +17,26 @@ public class ShoppingServiceImpl implements ShoppingService{
     }
 
     @Override
-    public boolean checkOut(Buyer buyer) throws CheckOutException {
-        if(this.isValidCheckout(buyer));
-        return false;
+    public Order checkOut(Buyer buyer) throws CheckOutException {
+        this.isValidCheckout(buyer);
+        Cart buyerCart = buyer.getCart();
+        boolean result = paymentService.pay(buyer.getCart().getPaymentCard(), buyerCart.getTotal());
+
+
+        Order order = new Order();
+        order.setOrderItems(buyer.getCart().getItems());
+
+        if (result) {
+            order.setOrderItems(buyer.getCart().getItems());
+            order.setPaid(result);
+            order.setOrderDate(LocalDate.now());
+            order.setOrderTotal(buyerCart.getTotal());
+            order.setDeliveryAddress(buyerCart.getDeliveryAddress());
+            buyer.setCart(null);
+        }
+        buyer.setCart(null);
+
+        return order;
     }
 
     private boolean isValidCheckout(Buyer buyer) throws CheckOutException{

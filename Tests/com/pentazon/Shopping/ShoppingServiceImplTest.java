@@ -2,6 +2,7 @@ package com.pentazon.Shopping;
 
 import com.pentazon.Payments.PaymentCard;
 import com.pentazon.Product.ProductDataBase;
+import com.pentazon.customer.Address;
 import com.pentazon.customer.Buyer;
 import com.pentazon.customer.Customer;
 import com.pentazon.exceptions.CheckOutException;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
 
 class ShoppingServiceImplTest {
 
@@ -29,6 +31,14 @@ class ShoppingServiceImplTest {
         donDozie.getCard().add(fbnVisa);
         Cart dozieCart = new Cart();
         dozieCart.addToCart(products.getMockProducts().get("AD001"), 5);
+
+        dozieCart.setPaymentCard(donDozie.getCard().get(0));
+
+        Address home = new Address();
+        home.setHouseNumber(6);
+        home.setStreet("Aso Rock Avenue");
+        home.setCity("Aso villa");
+        donDozie.getAddresses().add(home);
 
         donDozie.setCart(dozieCart);
     }
@@ -69,6 +79,18 @@ class ShoppingServiceImplTest {
 
     @Test
     void checkOut(){
+        try {
+            Map<String, Item> cartItem = donDozie.getCart().getItems();
+            Address deliveryAddress = donDozie.getCart().getDeliveryAddress();
+            Cart oldCart = donDozie.getCart();
+            Order dozieOrder = shoppingService.checkOut(donDozie);
+            assertNotNull(dozieOrder);
+            assertEquals(cartItem, dozieOrder.getOrderItems());
+            assertNull(donDozie.getCart());
+            assertTrue(dozieOrder.isPaid());
 
+        } catch ( CheckOutException e){
+            e.printStackTrace();
+        }
     }
 }
