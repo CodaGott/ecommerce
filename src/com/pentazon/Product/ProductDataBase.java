@@ -1,6 +1,6 @@
 package com.pentazon.Product;
 
-import com.pentazon.ProductExceptions;
+import com.pentazon.exceptions.ProductExceptions;
 
 import java.math.BigDecimal;
 import java.util.HashMap;

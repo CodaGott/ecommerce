@@ -1,4 +1,4 @@
-package com.pentazon;
+package com.pentazon.customer;
 
 public class Address {
     private int houseNumber;

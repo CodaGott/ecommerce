@@ -1,9 +1,10 @@
 package com.pentazon.Shopping;
 
+import com.pentazon.Payments.PaymentCard;
 import com.pentazon.Product.Product;
 import com.pentazon.Product.ProductService;
 import com.pentazon.Product.ProductServiceImpl;
-import com.pentazon.ProductExceptions;
+import com.pentazon.exceptions.ProductExceptions;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -12,10 +13,18 @@ import java.util.logging.Logger;
 
 public class Cart {
     private Logger logger = Logger.getLogger(Cart.class.getName());
-    private Map<String, CartItem> items;
+    private Map<String, Item> items;
     private ProductService productService;
     private BigDecimal total = BigDecimal.ZERO;
+    private PaymentCard paymentCard;
 
+    public PaymentCard getPaymentCard() {
+        return paymentCard;
+    }
+
+    public void setPaymentCard(PaymentCard paymentCard) {
+        this.paymentCard = paymentCard;
+    }
 
     public Cart() {
         items = new HashMap<>();
@@ -25,9 +34,9 @@ public class Cart {
 
     public void addToCart(Product product) {
         if (verifiedProduct(product)) {
-            CartItem item = items.get(product.getProductId());
+            Item item = items.get(product.getProductId());
             if (item == null) {
-                item = new CartItem(product);
+                item = new Item(product);
 
             }
             item.addItems(BigInteger.ONE.intValue());
@@ -38,9 +47,9 @@ public class Cart {
 
     public void addToCart(Product product, int quantity) {
         if (verifiedProduct(product)) {
-            CartItem item = items.get(product.getProductId());
+            Item item = items.get(product.getProductId());
             if (item == null) {
-                item = new CartItem(product);
+                item = new Item(product);
             }
             item.addItems(quantity);
             this.items.put(product.getProductId(), item);
@@ -72,7 +81,7 @@ public class Cart {
     public BigDecimal calculateCartTotal() {
         if(!items.isEmpty()){
             this.total = BigDecimal.ZERO;
-            Iterator<CartItem> cartItems = items.values().iterator();
+            Iterator<Item> cartItems = items.values().iterator();
             while(cartItems.hasNext()){
                 System.out.println(this.total.toString());
                 this.total = this.total.add(cartItems.next().getTotal());
@@ -82,11 +91,11 @@ public class Cart {
         return this.getTotal();
     }
 
-    public Map<String, CartItem> getItems() {
+    public Map<String, Item> getItems() {
         return items;
     }
 
-    public void setItems(Map<String, CartItem> items) {
+    public void setItems(Map<String, Item> items) {
         this.items = items;
     }
 
@@ -98,12 +107,3 @@ public class Cart {
         this.total = total;
     }
 }
-
-
-//echo "# ecommerce" >> README.md
-//        git init
-//        git add README.md
-//        git commit -m "first commit"
-//        git branch -M main
-//        git remote add origin https://github.com/CodaGott/ecommerce.git
-//        git push -u origin main

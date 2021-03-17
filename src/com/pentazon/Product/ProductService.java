@@ -1,6 +1,6 @@
 package com.pentazon.Product;
 
-import com.pentazon.ProductExceptions;
+import com.pentazon.exceptions.ProductExceptions;
 
 /**
  * provides services for dealing with products in pentazon

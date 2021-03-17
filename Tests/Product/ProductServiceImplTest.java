@@ -3,7 +3,7 @@ package Product;
 import com.pentazon.Product.Product;
 import com.pentazon.Product.ProductService;
 import com.pentazon.Product.ProductServiceImpl;
-import com.pentazon.ProductExceptions;
+import com.pentazon.exceptions.ProductExceptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
