@@ -8,15 +8,20 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+import java.util.Map;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProductServiceImplTest {
 
     ProductService productService;
-
+    Product product;
     @BeforeEach
     void setUp() {
         productService = new ProductServiceImpl() ;
+        product = new Product("TestProduct ", "Product for testing", new BigDecimal(50));
+        product.setProductId("Test101");
 
     }
 
@@ -48,5 +53,40 @@ class ProductServiceImplTest {
 
 
     }
+
+    @Test
+    void addNullProduct(){
+        product.setName(" ");
+        assertThrows(ProductExceptions.class,()-> productService.addProduct(product));
+    }
+
+    @Test
+    void addNullPrice(){
+        product.setPrice(new BigDecimal(50));
+        assertThrows(ProductExceptions.class,()-> productService.addProduct(product));
+
+    }@Test
+    void addProduct(){
+        Map<String, Product> initialProduct = productService.getAllProducts();
+        assertTrue(initialProduct.size() ==3);
+        try {
+            Map<String, Product> allProducts = productService.getAllProducts();
+            boolean result = productService.addProduct(product);
+            assertTrue(result);
+            assertTrue(allProducts.size() ==4);
+
+            Product check = productService.findProductById("Test101");
+            assertNotNull(check);
+        }catch (ProductExceptions e){
+            e.printStackTrace();
+        }
+    }
+
+    @Test
+    void removeNullProduct(){
+        assertThrows(ProductExceptions.class,()-> productService.addProduct(product));
+    }
+
+
 
 }

@@ -2,6 +2,8 @@ package com.pentazon.Product;
 
 import com.pentazon.exceptions.ProductExceptions;
 
+import java.util.Map;
+
 /**
  * provides services for dealing with products in pentazon
  */
@@ -21,6 +23,8 @@ public interface ProductService {
      */
     public Product findProductById(String productId) throws ProductExceptions;
 
+    public Map<String, Product> getAllProducts();
+
     /**
      *
      * @param product
@@ -28,4 +32,12 @@ public interface ProductService {
      * @throws ProductExceptions
      */
     public boolean addProduct(Product product) throws ProductExceptions;
+
+    /**
+     *
+     * @param product
+     * @return
+     * @throws ProductExceptions
+     */
+    public boolean removeProduct(Product product) throws ProductExceptions;
 }
